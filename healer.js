@@ -3,7 +3,18 @@ module.exports = function (creep, damagedCreeps, defendedSpawn) {
     var findHealTargetOptions = {
         maxOps: 500,
         filter: function(object) {
-            return object.hits < object.hitsMax && object != creep;
+            // Skip creeps which does not have wounds
+            if (object.hits == object.hitsMax) {
+                return false;
+            }
+
+            // We heal only guards.
+            if (object.memory.role != "guard") {
+                return false;
+            }
+
+            // Skip yourself
+            return object != creep;
         }
     };
     var creepToHeal = creep.pos.findNearest(Game.MY_CREEPS, findHealTargetOptions);
