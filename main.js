@@ -18,11 +18,15 @@ for(var creepName in Game.creeps) {
 
 	if(creep.memory.role == 'guard') {
     	if(targets.length) {
-    	    if (creep.pos.inRangeTo(defendedSpawn, 10) || creep.pos.inRangeTo(targets[0], 15)){
+    	    if (creep.pos.inRangeTo(defendedSpawn, 3) || creep.pos.inRangeTo(targets[0], 5)) {
     		    creep.moveTo(targets[0]);
     	    }
 
     		creep.attack(targets[0]);
+    	} else {
+    	    if (!creep.pos.inRangeTo(defendedSpawn, 3)) {
+    	        creep.moveTo(defendedSpawn);
+    	    }
     	}
 
     	guards++;
@@ -50,7 +54,7 @@ for(var creepName in Game.creeps) {
 for (var spawnName in Game.spawns) {
     var spawn = Game.spawns[spawnName];
     if (spawn.spawning === null) {
-        if (harvesters <= 6 && targets.length === 0) {
+        if (harvesters <= 5 && targets.length === 0) {
             if (spawn.energy >= 120) {
                 builder.harvester(spawn);
             }

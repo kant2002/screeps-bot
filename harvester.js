@@ -1,12 +1,12 @@
 /* global Game, console, module */
 module.exports = function (creep) {
 	if(creep.energy < creep.energyCapacity) {
-		var sources = creep.pos.findNearest(Game.SOURCES_ACTIVE);
+        var sources = creep.pos.findNearest(Game.SOURCES_ACTIVE, { filter: function(object) { return object.energy >= 10; }});
 		if (sources.length === 0) {
 		    console.log("No active sources");
 		} else {
-    		creep.moveTo(sources[0]);
-    		creep.harvest(sources[0]);
+    		creep.moveTo(sources);
+    		creep.harvest(sources);
 		}
 	}
 	else {
