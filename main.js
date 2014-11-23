@@ -2,6 +2,7 @@
 var harvester_func = require('harvester');
 var builder = require('builder');
 var healer_func = require('healer');
+var guard_func = require('guard');
 
 var harvesters = 0;
 var guards = 0;
@@ -20,19 +21,7 @@ for(var creepName in Game.creeps) {
 	}
 
 	if(creep.memory.role == 'guard') {
-    	if (targets.length !== 0) {
-    	    var targetToAttack = creep.pos.findNearest(Game.HOSTILE_CREEPS, { maxOps: 500 });
-    	    if (creep.pos.inRangeTo(defendedSpawn, 2) || creep.pos.inRangeTo(targetToAttack, 3)) {
-    		    creep.moveTo(targetToAttack);
-    	    }
-
-    		creep.attack(targetToAttack);
-    	} else {
-    	    if (!creep.pos.inRangeTo(defendedSpawn, 3)) {
-    	        creep.moveTo(defendedSpawn);
-    	    }
-    	}
-
+	    guard_func(creep, targets, defendedSpawn);
     	guards++;
     }
 
