@@ -1,28 +1,32 @@
 /* global Game, console, module, require */
-var harvester = require('harvester');
+var harvester_func = require('harvester');
 var builder = require('builder');
+var healer_func = require('healer');
 
 var harvesters = 0;
 var guards = 0;
 var builders = 0;
+var healer = 0;
 
 var defendedSpawn = Game.spawns.Spawn1;
 var targets = defendedSpawn.room.find(Game.HOSTILE_CREEPS);
+var damagedCreeps = defendedSpawn.room.find(Game.MY_CREEPS, { filter: function(object) { return object.hits < object.hitsMax; }});
 for(var creepName in Game.creeps) {
 	var creep = Game.creeps[creepName];
 
 	if(creep.memory.role == 'harvester') {
-		harvester(creep);
+		harvester_func(creep);
 		harvesters++;
 	}
 
 	if(creep.memory.role == 'guard') {
-    	if(targets.length) {
-    	    if (creep.pos.inRangeTo(defendedSpawn, 3) || creep.pos.inRangeTo(targets[0], 5)) {
-    		    creep.moveTo(targets[0]);
+    	if (targets.length !== 0) {
+    	    var targetToAttack = creep.pos.findNearest(Game.HOSTILE_CREEPS, { maxOps: 500 });
+    	    if (creep.pos.inRangeTo(defendedSpawn, 2) || creep.pos.inRangeTo(targetToAttack, 3)) {
+    		    creep.moveTo(targetToAttack);
     	    }
 
-    		creep.attack(targets[0]);
+    		creep.attack(targetToAttack);
     	} else {
     	    if (!creep.pos.inRangeTo(defendedSpawn, 3)) {
     	        creep.moveTo(defendedSpawn);
@@ -31,8 +35,13 @@ for(var creepName in Game.creeps) {
 
     	guards++;
     }
-    if(creep.memory.role == 'builder') {
 
+	if(creep.memory.role == 'healer') {
+	    healer_func(creep, damagedCreeps, defendedSpawn);
+    	healer++;
+    }
+
+    if(creep.memory.role == 'builder') {
 		if(creep.energy === 0) {
 		    console.log('collecting energy');
 			creep.moveTo(Game.spawns.Spawn1);
@@ -40,7 +49,7 @@ for(var creepName in Game.creeps) {
 		}
 		else {
 			var targets = creep.room.find(Game.CONSTRUCTION_SITES);
-			if(targets.length) {
+			if (targets.length) {
 		        console.log('Start building ' + targets[0]);
 				creep.moveTo(targets[0]);
 				creep.build(targets[0]);
@@ -54,13 +63,19 @@ for(var creepName in Game.creeps) {
 for (var spawnName in Game.spawns) {
     var spawn = Game.spawns[spawnName];
     if (spawn.spawning === null) {
-        if (harvesters <= 5 && targets.length === 0) {
-            if (spawn.energy >= 120) {
-                builder.harvester(spawn);
+        if (healer === 0 && damagedCreeps.length > 0) {
+            if (spawn.energy >= 305) {
+                builder.healer(spawn);
             }
         } else {
-            if (spawn.energy >= 220) {
-                builder.guard(spawn);
+            if (harvesters <= 5 && targets.length === 0) {
+                if (spawn.energy >= 120) {
+                    builder.harvester(spawn);
+                }
+            } else {
+                if (spawn.energy >= 220) {
+                    builder.guard(spawn);
+                }
             }
         }
     }
