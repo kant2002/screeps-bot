@@ -3,8 +3,10 @@ var harvester_func = require('harvester');
 var builder = require('builder');
 var healer_func = require('healer');
 var guard_func = require('guard');
+var carrier_func = require('carrier');
 
 var harvesters = 0;
+var carriers = 0;
 var guards = 0;
 var builders = 0;
 var healer = 0;
@@ -19,8 +21,13 @@ for(var creepName in Game.creeps) {
 	var creep = Game.creeps[creepName];
 
 	if(creep.memory.role == 'harvester') {
-		harvester_func(creep);
+		harvester_func(creep, defendedSpawn);
 		harvesters++;
+	}
+
+	if(creep.memory.role == 'carrier') {
+		carrier_func(creep, defendedSpawn);
+		carriers++;
 	}
 
 	if(creep.memory.role == 'guard') {
@@ -52,27 +59,43 @@ for(var creepName in Game.creeps) {
 	}
 }
 
+function doSpawn(spawn) {
+    if (healer === 0 && damagedCreeps.length > 0) {
+        if (spawn.energy >= 305) {
+            builder.healer(spawn, ['guard']);
+            return;
+        }
+    }
+
+    if (harvesters < 3 && targets.length === 0) {
+        if (spawn.energy >= 120) {
+            builder.harvester(spawn);
+            return;
+        }
+    }
+
+    if (carriers < 2 && targets.length === 0) {
+        if (spawn.energy >= 100) {
+            builder.carrier(spawn);
+            return;
+        }
+    }
+
+    if (healer === 1 && damagedHealers.length > 0) {
+        if (spawn.energy >= 305) {
+            builder.healer(spawn, ['harvester']);
+            return;
+        }
+    }
+
+    if (spawn.energy >= 220) {
+        builder.guard(spawn);
+    }
+}
+
 for (var spawnName in Game.spawns) {
     var spawn = Game.spawns[spawnName];
     if (spawn.spawning === null) {
-        if (healer === 0 && damagedCreeps.length > 0) {
-            if (spawn.energy >= 305) {
-                builder.healer(spawn, ['guard']);
-            }
-        } else {
-            if (harvesters <= 5 && targets.length === 0) {
-                if (spawn.energy >= 120) {
-                    builder.harvester(spawn);
-                }
-            } else {
-                if (healer === 1 && damagedHealers.length > 0) {
-                    if (spawn.energy >= 305) {
-                        builder.healer(spawn, ['harvester']);
-                    }
-                } else if (spawn.energy >= 220) {
-                    builder.guard(spawn);
-                }
-            }
-        }
+        doSpawn(spawn);
     }
 }
