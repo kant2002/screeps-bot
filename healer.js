@@ -22,7 +22,7 @@ module.exports = function (creep, damagedCreeps, defendedSpawn) {
     if (creepToHeal !== null) {
 	    console.log("HEALER:", creepToHeal);
 	    var enemiesAround = creep.pos.findInRange(Game.HOSTILE_CREEPS, 3);
-        if (enemiesAround === null || enemiesAround.length === 0) {
+        if (enemiesAround === null || enemiesAround.length === 0 || true) {
             console.log("HEALER: Not found enemy creeps in range, moving to heal target");
             creep.moveTo(creepToHeal);
             creep.heal(creepToHeal);
