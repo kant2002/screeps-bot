@@ -60,32 +60,37 @@ for(var creepName in Game.creeps) {
 }
 
 function doSpawn(spawn) {
+    console.log("Healers, ", healer, "Damaged creeps ", damagedCreeps.length);
     if (healer === 0 && damagedCreeps.length > 0) {
         if (spawn.energy >= 305) {
             builder.healer(spawn, ['guard']);
-            return;
         }
+
+        return;
     }
 
     if (harvesters < 3 && targets.length === 0) {
         if (spawn.energy >= 120) {
             builder.harvester(spawn);
-            return;
         }
+
+        return;
     }
 
-    if (carriers < 2 && targets.length === 0) {
+    if (carriers < 4 && targets.length === 0) {
         if (spawn.energy >= 100) {
             builder.carrier(spawn);
-            return;
         }
+
+        return;
     }
 
     if (healer === 1 && damagedHealers.length > 0) {
         if (spawn.energy >= 305) {
             builder.healer(spawn, ['harvester']);
-            return;
         }
+
+        return;
     }
 
     if (spawn.energy >= 220) {
