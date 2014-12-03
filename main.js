@@ -1,6 +1,6 @@
 /* global Game, console, module, require */
 var harvester_func = require('harvester');
-var builder = require('builder');
+var builder = require('spawner');
 var healer_func = require('healer');
 var guard_func = require('guard');
 var carrier_func = require('carrier');
