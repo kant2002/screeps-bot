@@ -1,6 +1,7 @@
 /* global Game, console, module, require */
 var harvester_func = require('harvester');
-var builder = require('spawner');
+var builder_func = require('builder');
+var spawner = require('spawner');
 var healer_func = require('healer');
 var guard_func = require('guard');
 var carrier_func = require('carrier');
@@ -41,29 +42,15 @@ for(var creepName in Game.creeps) {
     }
 
     if(creep.memory.role == 'builder') {
-		if(creep.energy === 0) {
-		    console.log('collecting energy');
-			creep.moveTo(Game.spawns.Spawn1);
-			Game.spawns.Spawn1.transferEnergy(creep);
-		}
-		else {
-			var targets = creep.room.find(Game.CONSTRUCTION_SITES);
-			if (targets.length) {
-		        console.log('Start building ' + targets[0]);
-				creep.moveTo(targets[0]);
-				creep.build(targets[0]);
-			}
-		}
-
+		builder_func(creep, defendedSpawn);
 		builders++;
 	}
 }
 
 function doSpawn(spawn) {
-    console.log("Healers, ", healer, "Damaged creeps ", damagedCreeps.length);
     if (healer === 0 && damagedCreeps.length > 0) {
         if (spawn.energy >= 305) {
-            builder.healer(spawn, ['guard']);
+            spawner.healer(spawn, ['guard']);
         }
 
         return;
@@ -71,7 +58,7 @@ function doSpawn(spawn) {
 
     if (harvesters < 3 && targets.length === 0) {
         if (spawn.energy >= 120) {
-            builder.harvester(spawn);
+            spawner.harvester(spawn);
         }
 
         return;
@@ -79,7 +66,15 @@ function doSpawn(spawn) {
 
     if (carriers < 4 && targets.length === 0) {
         if (spawn.energy >= 100) {
-            builder.carrier(spawn);
+            spawner.carrier(spawn);
+        }
+
+        return;
+    }
+
+    if (healer === 1 && builders < 1) {
+        if (spawn.energy >= 160) {
+            spawner.builder(spawn);
         }
 
         return;
@@ -87,14 +82,14 @@ function doSpawn(spawn) {
 
     if (healer === 1 && damagedHealers.length > 0) {
         if (spawn.energy >= 305) {
-            builder.healer(spawn, ['harvester']);
+            spawner.healer(spawn, ['harvester']);
         }
 
         return;
     }
 
     if (spawn.energy >= 220) {
-        builder.guard(spawn);
+        spawner.guard(spawn);
     }
 }
 
