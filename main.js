@@ -12,6 +12,9 @@ var healer = 0;
 var defendedSpawn = Game.spawns.Spawn1;
 var targets = defendedSpawn.room.find(Game.HOSTILE_CREEPS);
 var damagedCreeps = defendedSpawn.room.find(Game.MY_CREEPS, { filter: function(object) { return object.hits < object.hitsMax; }});
+var damagedHealers = defendedSpawn.room.find(Game.MY_CREEPS, { filter: function(object) {
+    return object.hits < object.hitsMax && object.memory.role === "healer";
+}});
 for(var creepName in Game.creeps) {
 	var creep = Game.creeps[creepName];
 
@@ -54,7 +57,7 @@ for (var spawnName in Game.spawns) {
     if (spawn.spawning === null) {
         if (healer === 0 && damagedCreeps.length > 0) {
             if (spawn.energy >= 305) {
-                builder.healer(spawn);
+                builder.healer(spawn, ['guard']);
             }
         } else {
             if (harvesters <= 5 && targets.length === 0) {
@@ -62,7 +65,11 @@ for (var spawnName in Game.spawns) {
                     builder.harvester(spawn);
                 }
             } else {
-                if (spawn.energy >= 220) {
+                if (healer === 1 && damagedHealers.length > 0) {
+                    if (spawn.energy >= 305) {
+                        builder.healer(spawn, ['harvester']);
+                    }
+                } else if (spawn.energy >= 220) {
                     builder.guard(spawn);
                 }
             }

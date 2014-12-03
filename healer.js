@@ -8,8 +8,9 @@ module.exports = function (creep, damagedCreeps, defendedSpawn) {
                 return false;
             }
 
-            // We heal only guards.
-            if (object.memory.role != "guard") {
+            // We heal only those who selected
+            // or other healers.
+            if (creep.memory.included.indexOf(object.memory.role) == -1 && object.memory.role != "healer") {
                 return false;
             }
 

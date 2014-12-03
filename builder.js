@@ -57,13 +57,13 @@ module.exports = {
             console.log("Not enough energy");
         }
     },
-    healer: function(spawn) {
+    healer: function(spawn, includedRole) {
         var index = spawn.memory.creepIndex || 0;
         var creepName = 'Healer' + index++;
         var code = spawn.createCreep(
             [Game.TOUGH, Game.HEAL, Game.MOVE, Game.MOVE],
             creepName,
-            { role: 'healer' }
+            { role: 'healer', included: includedRole }
         );
         if (code !== Game.ERR_NOT_ENOUGH_ENERGY) {
             Game.spawns.Spawn1.memory.creepIndex = index + 1;
