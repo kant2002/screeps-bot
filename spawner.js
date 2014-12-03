@@ -5,7 +5,7 @@ module.exports = {
         var index = spawn.memory.creepIndex || 0;
         var creepName = 'Worker' + index++;
         var code = spawn.createCreep(
-            [Game.WORK, Game.CARRY, Game.MOVE],
+            [Game.WORK, Game.WORK, Game.CARRY, Game.MOVE],
             creepName,
             { role: 'harvester' }
         );

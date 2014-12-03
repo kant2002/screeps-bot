@@ -12,6 +12,10 @@ var guards = 0;
 var builders = 0;
 var healer = 0;
 
+// Now for builders not enough energy produced,
+// and they are energy drains
+var supportBuilders = false;
+
 var defendedSpawn = Game.spawns.Spawn1;
 var targets = defendedSpawn.room.find(Game.HOSTILE_CREEPS);
 var damagedCreeps = defendedSpawn.room.find(Game.MY_CREEPS, { filter: function(object) { return object.hits < object.hitsMax; }});
@@ -57,7 +61,7 @@ function doSpawn(spawn) {
     }
 
     if (harvesters < 3 && targets.length === 0) {
-        if (spawn.energy >= 120) {
+        if (spawn.energy >= 170) {
             spawner.harvester(spawn);
         }
 
@@ -72,7 +76,7 @@ function doSpawn(spawn) {
         return;
     }
 
-    if (healer === 1 && builders < 1) {
+    if (healer === 1 && builders < 1 && supportBuilders) {
         if (spawn.energy >= 160) {
             spawner.builder(spawn);
         }
