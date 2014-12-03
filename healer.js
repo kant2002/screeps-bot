@@ -20,10 +20,10 @@ module.exports = function (creep, damagedCreeps, defendedSpawn) {
     };
     var creepToHeal = creep.pos.findNearest(Game.MY_CREEPS, findHealTargetOptions);
     if (creepToHeal !== null) {
-	    console.log("HEALER:", creepToHeal);
+        creep.memory.creepToHeal = creepToHeal.name;
 	    var enemiesAround = creep.pos.findInRange(Game.HOSTILE_CREEPS, 3);
         if (enemiesAround === null || enemiesAround.length === 0 || true) {
-            console.log("HEALER: Not found enemy creeps in range, moving to heal target");
+            // console.log("HEALER: Not found enemy creeps in range, moving to heal target");
             creep.moveTo(creepToHeal);
             creep.heal(creepToHeal);
         } else {
@@ -31,7 +31,7 @@ module.exports = function (creep, damagedCreeps, defendedSpawn) {
             creep.moveTo(defendedSpawn);
         }
     } else {
-        console.log("HEALER: All done, go home");
+        // console.log("HEALER: All done, go home");
         if (!creep.pos.inRangeTo(defendedSpawn, 3)) {
             creep.moveTo(defendedSpawn);
         }
