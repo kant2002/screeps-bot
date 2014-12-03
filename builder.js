@@ -9,8 +9,9 @@ module.exports = {
             creepName,
             { role: 'harvester' }
         );
+        spawn.memory.lastCreep = "harvester";
         if (code !== Game.ERR_NOT_ENOUGH_ENERGY) {
-            Game.spawns.Spawn1.memory.creepIndex = index + 1;
+            spawn.memory.creepIndex = index + 1;
         } else {
             console.log("Not enough energy for worker. Current energy " + spawn.energy);
         }
@@ -24,8 +25,9 @@ module.exports = {
             creepName,
             { role: 'carrier' }
         );
+        spawn.memory.lastCreep = "carrier";
         if (code !== Game.ERR_NOT_ENOUGH_ENERGY) {
-            Game.spawns.Spawn1.memory.creepIndex = index + 1;
+            spawn.memory.creepIndex = index + 1;
         } else {
             console.log("Not enough energy for carrier. Current energy " + spawn.energy);
         }
@@ -38,8 +40,9 @@ module.exports = {
             creepName,
             { role: 'builder' }
         );
+        spawn.memory.lastCreep = "builder";
         if (code !== Game.ERR_NOT_ENOUGH_ENERGY) {
-            Game.spawns.Spawn1.memory.creepIndex = index + 1;
+            spawn.memory.creepIndex = index + 1;
         } else {
             console.log("Not enough energy for builder. Current energy " + spawn.energy);
         }
@@ -52,8 +55,9 @@ module.exports = {
             creepName,
             { role: 'guard' }
         );
+        spawn.memory.lastCreep = "guard";
         if (code !== Game.ERR_NOT_ENOUGH_ENERGY) {
-            Game.spawns.Spawn1.memory.creepIndex = index + 1;
+            spawn.memory.creepIndex = index + 1;
         } else {
             console.log("Not enough energy for guard. Current energy " + spawn.energy);
         }
@@ -66,8 +70,9 @@ module.exports = {
             creepName,
             { role: 'guard' }
         );
+        spawn.memory.lastCreep = "archer";
         if (code !== Game.ERR_NOT_ENOUGH_ENERGY) {
-            Game.spawns.Spawn1.memory.creepIndex = index + 1;
+            spawn.memory.creepIndex = index + 1;
         } else {
             console.log("Not enough energy for archer. Current energy " + spawn.energy);
         }
@@ -80,8 +85,9 @@ module.exports = {
             creepName,
             { role: 'healer', included: includedRole }
         );
+        spawn.memory.lastCreep = "healer";
         if (code !== Game.ERR_NOT_ENOUGH_ENERGY) {
-            Game.spawns.Spawn1.memory.creepIndex = index + 1;
+            spawn.memory.creepIndex = index + 1;
         } else {
             console.log("Not enough energy for healer. Current energy " + spawn.energy);
         }
